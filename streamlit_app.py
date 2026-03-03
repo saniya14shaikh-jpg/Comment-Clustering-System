@@ -65,7 +65,7 @@ with st.spinner("🔄 Loading AI Models..."):
 
 # ── Header ─────────────────────────────────────────────────────
 st.title("💬 Comment Clustering System")
-st.markdown("**Instagram NLP Sentiment & Toxicity Analysis Platform**")
+st.markdown("**Instagram Comment CLustering & Toxicity Analysis Platform**")
 st.markdown("---")
 
 # ── Tabs ───────────────────────────────────────────────────────
@@ -120,7 +120,8 @@ with tab1:
             col5,col6,col7 = st.columns(3)
             col5.metric("Toxic",     "☣️ YES" if result['is_toxic']     else "✅ NO")
             col6.metric("Sarcastic", "🙄 YES" if result['is_sarcastic'] else "✅ NO")
-            col7.metric("Cluster",   cluster['label'])
+            col7.metric("Cluster", f"{cluster['emotion']} ({cluster['label']})")
+
 
             # Color box
             if result['is_toxic']:
