@@ -18,6 +18,16 @@ from preprocessing import preprocess_batch
 MODEL_DIR = "models"
 os.makedirs(MODEL_DIR, exist_ok=True)
 
+EMOTION_MAP = {
+    0: "Negative 😡",
+    1: "Positive 😀",
+    2: "Toxic ☣️",
+    3: "Sad 😢",
+    4: "Positive 😀",
+    5: "Inspirational 🤩"
+}
+
+
 
 def get_vectorizer(max_features=5000):
     return TfidfVectorizer(
@@ -98,9 +108,13 @@ def predict_cluster(text, vectorizer, kmeans, cluster_labels=None):
     min_dist   = distances[cluster]
     confidence = round(1 / (1 + min_dist), 4)
 
+    # Emotion mapping
+    emotion = EMOTION_MAP.get(cluster, "Unknown")
+
     return {
         "cluster":    cluster,
         "label":      label,
+        "emotion":    emotion,
         "confidence": confidence
     }
 
@@ -178,4 +192,3 @@ if __name__ == "__main__":
     top_terms = get_top_terms(vectorizer, kmeans)
     for cluster_name, terms in top_terms.items():
         print(f"   {cluster_name}: {', '.join(terms[:5])}")
-
