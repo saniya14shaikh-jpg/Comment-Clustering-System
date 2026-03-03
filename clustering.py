@@ -178,3 +178,4 @@ if __name__ == "__main__":
     top_terms = get_top_terms(vectorizer, kmeans)
     for cluster_name, terms in top_terms.items():
         print(f"   {cluster_name}: {', '.join(terms[:5])}")
+
