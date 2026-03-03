@@ -1,0 +1,201 @@
+comment_id,username,post_id,comment_text,sentiment,emotion,is_toxic,likes
+CMT0001,lisa_m,POST009,Interesting approach. Not sure how I feel about it.,neutral,neutral,0,258
+CMT0002,priya_k,POST016,You have no talent whatsoever! Stop posting please!,negative,angry,0,417
+CMT0003,sarah_j,POST013,Worst video on the internet! Disliked and reported!,negative,angry,0,135
+CMT0004,ana_g,POST012,You ruined my mood with this terrible content! 😤,negative,angry,0,224
+CMT0005,amy_c,POST018,So emotional watching this. Thank you for sharing,negative,sad,0,228
+CMT0006,john_d,POST003,What editing software do you use?,neutral,neutral,0,399
+CMT0007,lisa_m,POST018,This is so cringe! I cannot believe people watch this!,negative,angry,0,67
+CMT0008,nina_p,POST004,It is what it is. Neither good nor bad.,neutral,neutral,0,455
+CMT0009,nina_p,POST003,Is this available to buy somewhere?,neutral,neutral,0,240
+CMT0010,ana_g,POST005,Not my style but I can see why others like it.,neutral,neutral,0,343
+CMT0011,sarah_j,POST009,This is the best thing I have seen all week! 😍,positive,happy,0,125
+CMT0012,dev_k,POST002,This brought back so many painful memories 😢,negative,sad,0,105
+CMT0013,chris_b,POST020,Not my style but I can see why others like it.,neutral,neutral,0,107
+CMT0014,sam_k,POST004,I CANNOT HANDLE THIS!! TOO GOOD TOO GOOD!! 🔥🔥,positive,excited,0,368
+CMT0015,priya_k,POST014,What camera do you use for this? Looks amazing!,neutral,neutral,0,69
+CMT0016,zara_h,POST007,Is this available to buy somewhere?,neutral,neutral,0,232
+CMT0017,vik_s,POST009,This is absolutely amazing! Love it so much! ❤️,positive,happy,0,497
+CMT0018,sam_k,POST007,Get lost you absolute idiot! Worst creator ever!,negative,angry,1,186
+CMT0019,zara_h,POST009,Absolutely love your content! Keep shining! 🌟,positive,happy,0,79
+CMT0020,john_d,POST009,Pathetic attempt at content creation! Just stop!,negative,angry,0,342
+CMT0021,sam_k,POST009,This gave me goosebumps! Absolutely stunning work!,positive,happy,0,359
+CMT0022,sofia_l,POST005,You clearly have no idea what you are doing! Terrible!,negative,angry,0,216
+CMT0023,chris_b,POST014,I regret watching this! Two minutes of my life wasted!,negative,angry,0,356
+CMT0024,riya_d,POST005,Kill this channel! You are absolutely worthless!,negative,angry,1,279
+CMT0025,zara_h,POST013,THIS JUST MADE MY ENTIRE YEAR!! AMAZING!!,positive,excited,0,356
+CMT0026,vik_s,POST016,This hit different today. Going through hard times 😭,negative,sad,0,230
+CMT0027,sam_k,POST016,You clearly have no idea what you are doing! Terrible!,negative,angry,0,79
+CMT0028,amy_c,POST012,You are such an idiot! Nobody wants to see your face!,negative,angry,1,298
+CMT0029,maya_s,POST010,NO WAY!! This is literally the best thing ever!!,positive,excited,0,341
+CMT0030,ana_g,POST009,This is the best thing I have seen all week! 😍,positive,happy,0,232
+CMT0031,pooja_r,POST017,Okay video. Forgot about it already.,neutral,neutral,0,161
+CMT0032,zara_h,POST013,What editing software do you use?,neutral,neutral,0,142
+CMT0033,riya_d,POST002,Worst video on the internet! Disliked and reported!,negative,angry,0,84
+CMT0034,sam_k,POST003,I AM SCREAMING RIGHT NOW THIS IS SO GOOD!!!,positive,excited,0,145
+CMT0035,lisa_m,POST014,NO WAY!! This is literally the best thing ever!!,positive,excited,0,402
+CMT0036,priya_k,POST002,Best creator on this platform hands down! Love you!,positive,happy,0,440
+CMT0037,chris_b,POST020,You are incredible! Never stop creating please!,positive,happy,0,453
+CMT0038,alex_99,POST019,How long did this take to make?,neutral,neutral,0,13
+CMT0039,john_d,POST005,Can you do a tutorial on how you made this?,neutral,neutral,0,242
+CMT0040,sofia_l,POST004,Pathetic attempt at content creation! Just stop!,negative,angry,0,126
+CMT0041,sam_k,POST017,This brought back so many painful memories 😢,negative,sad,0,286
+CMT0042,nina_p,POST015,You are such a fake person! Nobody likes this!,negative,angry,0,127
+CMT0043,raj_s,POST012,This deserves way more views! Incredible content!,positive,happy,0,181
+CMT0044,john_d,POST019,Wow this made my day! You are so talented! 🔥,positive,happy,0,484
+CMT0045,amy_c,POST009,This exists I suppose. Good for you.,neutral,neutral,0,22
+CMT0046,bella_r,POST011,This gave me goosebumps! Absolutely stunning work!,positive,happy,0,52
+CMT0047,jake_t,POST008,This gave me a headache! So annoying and pointless!,negative,angry,0,301
+CMT0048,neil_m,POST010,This is the best thing I have seen all week! 😍,positive,happy,0,430
+CMT0049,riya_d,POST003,Interesting approach. Not sure how I feel about it.,neutral,neutral,0,450
+CMT0050,pooja_r,POST016,This gave me a headache! So annoying and pointless!,negative,angry,0,124
+CMT0051,raj_s,POST009,You clearly have no idea what you are doing! Terrible!,negative,angry,0,270
+CMT0052,tom_r,POST017,Everyone hates you! Just quit already you loser!,negative,angry,1,204
+CMT0053,harsh_p,POST011,Wow this made my day! You are so talented! 🔥,positive,happy,0,205
+CMT0054,amy_c,POST008,Everyone hates you! Just quit already you loser!,negative,angry,1,114
+CMT0055,emma_w,POST016,Disgusting content! How does this even get views?,negative,angry,0,484
+CMT0056,maya_s,POST016,Wait WHAT?! This is insane!! I am obsessed!!!,positive,excited,0,406
+CMT0057,lisa_m,POST001,What song is playing in the background?,neutral,neutral,0,318
+CMT0058,bella_r,POST007,You clearly have no idea what you are doing! Terrible!,negative,angry,0,365
+CMT0059,nina_p,POST015,I needed this today. Life has been so tough lately,negative,sad,0,39
+CMT0060,sam_k,POST013,What editing software do you use?,neutral,neutral,0,370
+CMT0061,sofia_l,POST015,I CANNOT HANDLE THIS!! TOO GOOD TOO GOOD!! 🔥🔥,positive,excited,0,226
+CMT0062,maya_s,POST004,You make me sick! Disgusting excuse for a creator!,negative,angry,1,197
+CMT0063,john_d,POST007,NO WAY!! This is literally the best thing ever!!,positive,excited,0,75
+CMT0064,jake_t,POST005,NO WAY!! This is literally the best thing ever!!,positive,excited,0,98
+CMT0065,riya_d,POST012,You are such an idiot! Nobody wants to see your face!,negative,angry,1,107
+CMT0066,maya_s,POST017,This is so cringe! I cannot believe people watch this!,negative,angry,0,80
+CMT0067,bella_r,POST012,How long did this take to make?,neutral,neutral,0,85
+CMT0068,max_j,POST013,This is the best thing I have seen all week! 😍,positive,happy,0,40
+CMT0069,sofia_l,POST014,YESSS THIS IS EVERYTHING I NEEDED TODAY!!!,positive,excited,0,453
+CMT0070,raj_s,POST002,Can you share the recipe or process for this?,neutral,neutral,0,133
+CMT0071,mike_23,POST018,WAIT WAIT WAIT this is unbelievably good!!!,positive,excited,0,127
+CMT0072,sarah_j,POST012,This brought back so many painful memories 😢,negative,sad,0,152
+CMT0073,sofia_l,POST019,I love everything about this! Pure perfection! ✨,positive,happy,0,142
+CMT0074,lisa_m,POST018,You are incredible! Never stop creating please!,positive,happy,0,214
+CMT0075,ryan_m,POST001,So emotional watching this. Thank you for sharing,negative,sad,0,199
+CMT0076,mike_23,POST008,Incredible work! Keep it up! You inspire me every day!,positive,happy,0,395
+CMT0077,alex_99,POST003,Okay video. Forgot about it already.,neutral,neutral,0,275
+CMT0078,emma_w,POST004,I love everything about this! Pure perfection! ✨,positive,happy,0,346
+CMT0079,sam_k,POST018,This is the best thing I have seen all week! 😍,positive,happy,0,384
+CMT0080,john_d,POST009,Crying watching this. Miss my old life so much 😢,negative,sad,0,171
+CMT0081,jake_t,POST001,THIS JUST MADE MY ENTIRE YEAR!! AMAZING!!,positive,excited,0,155
+CMT0082,chris_b,POST004,It is fine I guess. Nothing memorable though.,neutral,neutral,0,480
+CMT0083,pooja_r,POST019,Is this available to buy somewhere?,neutral,neutral,0,339
+CMT0084,amy_c,POST018,Seen better seen worse. Just average content.,neutral,neutral,0,360
+CMT0085,vik_s,POST015,Wow this made my day! You are so talented! 🔥,positive,happy,0,274
+CMT0086,luke_w,POST015,You just made my entire week better! Thank you!,positive,happy,0,270
+CMT0087,priya_k,POST008,This is the worst content I have ever seen! 😡,negative,angry,0,85
+CMT0088,sam_k,POST007,You are such an idiot! Nobody wants to see your face!,negative,angry,1,204
+CMT0089,diana_f,POST018,Absolutely terrible! Unfollow! Waste of my time!,negative,angry,0,428
+CMT0090,luke_w,POST003,Absolutely love your content! Keep shining! 🌟,positive,happy,0,197
+CMT0091,zara_h,POST001,Get lost you absolute idiot! Worst creator ever!,negative,angry,1,59
+CMT0092,neil_m,POST014,So emotional watching this. Thank you for sharing,negative,sad,0,275
+CMT0093,tom_r,POST010,Average content. Has been done before many times.,neutral,neutral,0,80
+CMT0094,max_j,POST018,You are so gifted! This is truly inspiring!,positive,happy,0,112
+CMT0095,vik_s,POST011,Stupid moron! Get off the internet forever!,negative,angry,1,400
+CMT0096,priya_k,POST019,What song is playing in the background?,neutral,neutral,0,353
+CMT0097,ana_g,POST019,So emotional watching this. Thank you for sharing,negative,sad,0,484
+CMT0098,luke_w,POST017,Not my style but I can see why others like it.,neutral,neutral,0,4
+CMT0099,dev_k,POST006,Omg this is everything! I cannot stop watching this!,positive,happy,0,232
+CMT0100,amy_c,POST002,Blessed to see this on my feed today! Amazing!,positive,happy,0,117
+CMT0101,pooja_r,POST007,Where was this filmed? Looks so beautiful!,neutral,neutral,0,238
+CMT0102,pooja_r,POST007,This deserves way more views! Incredible content!,positive,happy,0,360
+CMT0103,emma_w,POST008,You are so gifted! This is truly inspiring!,positive,happy,0,381
+CMT0104,john_d,POST005,This deserves way more views! Incredible content!,positive,happy,0,260
+CMT0105,neil_m,POST006,You are ugly and talentless! Go away permanently!,negative,angry,1,499
+CMT0106,emma_w,POST006,This is the best thing I have seen all week! 😍,positive,happy,0,405
+CMT0107,priya_k,POST011,Horrible! Just horrible! Delete this immediately!,negative,angry,0,10
+CMT0108,john_d,POST019,This gave me a headache! So annoying and pointless!,negative,angry,0,304
+CMT0109,emma_w,POST008,This hit different today. Going through hard times 😭,negative,sad,0,196
+CMT0110,bella_r,POST006,This video is pure gold! Sharing with everyone!,positive,happy,0,259
+CMT0111,tina_b,POST013,Wait WHAT?! This is insane!! I am obsessed!!!,positive,excited,0,253
+CMT0112,sarah_j,POST015,Watched it. Moving on with my day.,neutral,neutral,0,318
+CMT0113,bella_r,POST001,What camera do you use for this? Looks amazing!,neutral,neutral,0,486
+CMT0114,luke_w,POST007,This video is pure gold! Sharing with everyone!,positive,happy,0,78
+CMT0115,alex_99,POST014,This is so bad I cannot even watch it fully!,negative,angry,0,181
+CMT0116,priya_k,POST011,You are so dumb it hurts to watch! Pathetic loser!,negative,angry,1,319
+CMT0117,sarah_j,POST003,Horrible! Just horrible! Delete this immediately!,negative,angry,0,362
+CMT0118,ryan_m,POST001,Blessed to see this on my feed today! Amazing!,positive,happy,0,57
+CMT0119,sofia_l,POST018,You have no talent whatsoever! Stop posting please!,negative,angry,0,50
+CMT0120,mike_23,POST002,This is trash! Absolute garbage content!,negative,angry,0,299
+CMT0121,dev_k,POST011,So emotional watching this. Thank you for sharing,negative,sad,0,277
+CMT0122,dev_k,POST019,This made me smile so much! Thank you for this!,positive,happy,0,204
+CMT0123,vik_s,POST018,What camera do you use for this? Looks amazing!,neutral,neutral,0,26
+CMT0124,bella_r,POST018,You have no talent whatsoever! Stop posting please!,negative,angry,0,392
+CMT0125,ana_g,POST015,Best creator on this platform hands down! Love you!,positive,happy,0,73
+CMT0126,jake_t,POST001,You are so gifted! This is truly inspiring!,positive,happy,0,348
+CMT0127,luke_w,POST009,This deserves way more views! Incredible content!,positive,happy,0,413
+CMT0128,maya_s,POST020,I love everything about this! Pure perfection! ✨,positive,happy,0,13
+CMT0129,emma_w,POST014,Get lost you absolute idiot! Worst creator ever!,negative,angry,1,65
+CMT0130,luke_w,POST018,Can you do a tutorial on how you made this?,neutral,neutral,0,13
+CMT0131,riya_d,POST014,Stupid moron! Get off the internet forever!,negative,angry,1,12
+CMT0132,tom_r,POST011,You are so dumb it hurts to watch! Pathetic loser!,negative,angry,1,223
+CMT0133,bella_r,POST006,Where was this filmed? Looks so beautiful!,neutral,neutral,0,493
+CMT0134,vik_s,POST018,Watched it. Moving on with my day.,neutral,neutral,0,79
+CMT0135,john_d,POST003,Absolutely terrible! Unfollow! Waste of my time!,negative,angry,0,463
+CMT0136,luke_w,POST006,Incredible work! Keep it up! You inspire me every day!,positive,happy,0,273
+CMT0137,riya_d,POST010,This deserves way more views! Incredible content!,positive,happy,0,122
+CMT0138,raj_s,POST019,Everyone hates you! Just quit already you loser!,negative,angry,1,492
+CMT0139,priya_k,POST019,You are incredible! Never stop creating please!,positive,happy,0,216
+CMT0140,vik_s,POST011,Worst video on the internet! Disliked and reported!,negative,angry,0,409
+CMT0141,john_d,POST005,THIS JUST MADE MY ENTIRE YEAR!! AMAZING!!,positive,excited,0,335
+CMT0142,amy_c,POST015,Can you do a tutorial on how you made this?,neutral,neutral,0,470
+CMT0143,harsh_p,POST014,This is so cringe! I cannot believe people watch this!,negative,angry,0,97
+CMT0144,luke_w,POST003,Okay I guess. Nothing special about this.,neutral,neutral,0,214
+CMT0145,dev_k,POST007,Garbage content from a garbage creator! Unsubscribed!,negative,angry,0,475
+CMT0146,harsh_p,POST004,Stupid moron! Get off the internet forever!,negative,angry,1,195
+CMT0147,max_j,POST001,This video is pure gold! Sharing with everyone!,positive,happy,0,306
+CMT0148,pooja_r,POST018,Absolutely terrible! Unfollow! Waste of my time!,negative,angry,0,31
+CMT0149,amy_c,POST015,You are ugly and talentless! Go away permanently!,negative,angry,1,179
+CMT0150,bella_r,POST006,This is absolutely amazing! Love it so much! ❤️,positive,happy,0,357
+CMT0151,maya_s,POST003,Absolutely terrible! Unfollow! Waste of my time!,negative,angry,0,435
+CMT0152,maya_s,POST009,Average content. Has been done before many times.,neutral,neutral,0,67
+CMT0153,luke_w,POST019,I AM SCREAMING RIGHT NOW THIS IS SO GOOD!!!,positive,excited,0,154
+CMT0154,riya_d,POST014,Get lost you absolute idiot! Worst creator ever!,negative,angry,1,498
+CMT0155,john_d,POST006,THIS JUST MADE MY ENTIRE YEAR!! AMAZING!!,positive,excited,0,411
+CMT0156,chris_b,POST012,You are such an idiot! Nobody wants to see your face!,negative,angry,1,460
+CMT0157,john_d,POST007,This is so bad I cannot even watch it fully!,negative,angry,0,97
+CMT0158,raj_s,POST015,I love everything about this! Pure perfection! ✨,positive,happy,0,194
+CMT0159,pooja_r,POST013,How long did this take to make?,neutral,neutral,0,203
+CMT0160,chris_b,POST007,This made me angry! Complete waste of time!,negative,angry,0,495
+CMT0161,dev_k,POST015,You have zero creativity! This is so boring and bad!,negative,angry,0,442
+CMT0162,priya_k,POST008,I CANNOT HANDLE THIS!! TOO GOOD TOO GOOD!! 🔥🔥,positive,excited,0,344
+CMT0163,tina_b,POST007,This hit different today. Going through hard times 😭,negative,sad,0,32
+CMT0164,vik_s,POST005,You make me sick! Disgusting excuse for a creator!,negative,angry,1,473
+CMT0165,harsh_p,POST008,You are so dumb it hurts to watch! Pathetic loser!,negative,angry,1,136
+CMT0166,sarah_j,POST017,You are so dumb it hurts to watch! Pathetic loser!,negative,angry,1,473
+CMT0167,riya_d,POST004,OMG OMG OMG I cannot believe this!!! 🎉🎉🎉,positive,excited,0,398
+CMT0168,sam_k,POST004,Absolutely terrible! Unfollow! Waste of my time!,negative,angry,0,31
+CMT0169,bella_r,POST017,Crying watching this. Miss my old life so much 😢,negative,sad,0,248
+CMT0170,mike_23,POST004,Everyone hates you! Just quit already you loser!,negative,angry,1,305
+CMT0171,bella_r,POST006,This deserves way more views! Incredible content!,positive,happy,0,276
+CMT0172,jake_t,POST001,You are so dumb it hurts to watch! Pathetic loser!,negative,angry,1,57
+CMT0173,bella_r,POST011,You are so gifted! This is truly inspiring!,positive,happy,0,57
+CMT0174,sam_k,POST004,You are ugly and talentless! Go away permanently!,negative,angry,1,181
+CMT0175,bella_r,POST015,This broke my heart in the best possible way 💔,negative,sad,0,313
+CMT0176,lisa_m,POST011,Not my style but I can see why others like it.,neutral,neutral,0,122
+CMT0177,raj_s,POST015,Everyone hates you! Just quit already you loser!,negative,angry,1,282
+CMT0178,riya_d,POST011,This made me smile so much! Thank you for this!,positive,happy,0,108
+CMT0179,neil_m,POST016,You are such an idiot! Nobody wants to see your face!,negative,angry,1,113
+CMT0180,nina_p,POST002,Seen better seen worse. Just average content.,neutral,neutral,0,47
+CMT0181,sarah_j,POST003,Wow this made my day! You are so talented! 🔥,positive,happy,0,111
+CMT0182,priya_k,POST020,You are such a fake person! Nobody likes this!,negative,angry,0,34
+CMT0183,bella_r,POST008,Crying watching this. Miss my old life so much 😢,negative,sad,0,430
+CMT0184,nina_p,POST003,What a complete waste of human existence you are!,negative,angry,1,495
+CMT0185,priya_k,POST008,Omg this is everything! I cannot stop watching this!,positive,happy,0,443
+CMT0186,sofia_l,POST011,Not my style but I can see why others like it.,neutral,neutral,0,475
+CMT0187,riya_d,POST018,This broke my heart in the best possible way 💔,negative,sad,0,41
+CMT0188,zara_h,POST005,Okay I guess. Nothing special about this.,neutral,neutral,0,326
+CMT0189,lisa_m,POST009,You make me sick! Disgusting excuse for a creator!,negative,angry,1,22
+CMT0190,ana_g,POST004,Horrible! Just horrible! Delete this immediately!,negative,angry,0,482
+CMT0191,ana_g,POST004,Incredible work! Keep it up! You inspire me every day!,positive,happy,0,183
+CMT0192,sam_k,POST013,THIS JUST MADE MY ENTIRE YEAR!! AMAZING!!,positive,excited,0,346
+CMT0193,jake_t,POST009,You are incredible! Never stop creating please!,positive,happy,0,382
+CMT0194,mike_23,POST008,OMG OMG OMG I cannot believe this!!! 🎉🎉🎉,positive,excited,0,243
+CMT0195,neil_m,POST019,This made me cry so much 😢 So beautiful and sad,negative,sad,0,194
+CMT0196,ryan_m,POST016,You have zero creativity! This is so boring and bad!,negative,angry,0,109
+CMT0197,ryan_m,POST008,I needed this today. Life has been so tough lately,negative,sad,0,139
+CMT0198,priya_k,POST007,You are so gifted! This is truly inspiring!,positive,happy,0,467
+CMT0199,neil_m,POST011,Absolutely terrible! Unfollow! Waste of my time!,negative,angry,0,36
+CMT0200,sofia_l,POST005,Watching this after a breakup and I am in tears 💔,negative,sad,0,410

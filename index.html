@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Comment Clustering System</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#0a0e1a;--card:#111827;--accent:#8b5cf6;--pos:#22c55e;--neg:#ef4444;--neu:#f59e0b;--text:#e2e8f0;--muted:#94a3b8;--border:#1f2937;--toxic:#dc2626;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',sans-serif;min-height:100vh}
+header{background:linear-gradient(135deg,#1e1b4b,#4c1d95);padding:20px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+header h1{font-size:1.6rem;font-weight:700}
+.badge{background:var(--accent);color:#fff;padding:4px 12px;border-radius:20px;font-size:.8rem}
+nav{display:flex;gap:4px;padding:12px 40px;background:var(--card);border-bottom:1px solid var(--border);flex-wrap:wrap}
+nav button{padding:8px 18px;border:none;border-radius:8px;cursor:pointer;font-size:.85rem;background:transparent;color:var(--muted);transition:.2s}
+nav button.active,nav button:hover{background:var(--accent);color:#fff}
+main{padding:24px 40px;max-width:1400px;margin:0 auto}
+.panel{display:none}.panel.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px}
+.card h2{font-size:1.05rem;margin-bottom:16px;color:var(--text)}
+textarea,input[type=text]{width:100%;background:#0d1117;border:1px solid var(--border);border-radius:8px;color:var(--text);padding:12px;font-size:.9rem;resize:vertical}
+textarea:focus,input:focus{outline:2px solid var(--accent)}
+select{background:#0d1117;border:1px solid var(--border);border-radius:8px;color:var(--text);padding:10px;font-size:.9rem}
+.btn{padding:10px 24px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;transition:.2s}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{opacity:.9}
+.btn-secondary{background:#1f2937;color:var(--text)}
+.flex{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.result-box{border-radius:10px;padding:20px;margin-top:16px;border:1px solid}
+.result-pos{border-color:var(--pos);background:rgba(34,197,94,.08)}
+.result-neg{border-color:var(--neg);background:rgba(239,68,68,.08)}
+.result-neu{border-color:var(--neu);background:rgba(245,158,11,.08)}
+.result-toxic{border-color:var(--toxic);background:rgba(220,38,38,.12)}
+.tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.78rem;font-weight:600;margin:2px}
+.tag-pos{background:rgba(34,197,94,.2);color:var(--pos)}
+.tag-neg{background:rgba(239,68,68,.2);color:var(--neg)}
+.tag-neu{background:rgba(245,158,11,.2);color:var(--neu)}
+.tag-toxic{background:rgba(220,38,38,.2);color:var(--toxic)}
+.tag-info{background:rgba(139,92,246,.2);color:#a78bfa}
+.meter{height:8px;border-radius:4px;background:#1f2937;margin:6px 0}
+.meter-fill{height:100%;border-radius:4px;transition:width .6s}
+.fill-pos{background:var(--pos)}.fill-neg{background:var(--neg)}.fill-neu{background:var(--neu)}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th,td{padding:10px 12px;border-bottom:1px solid var(--border);text-align:left}
+th{background:#0d1117;color:var(--muted);font-weight:600}
+tr:hover{background:rgba(139,92,246,.05)}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:20px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;text-align:center}
+.stat-num{font-size:1.8rem;font-weight:700}.stat-label{color:var(--muted);font-size:.8rem;margin-top:4px}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.chart-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.upload-area{border:2px dashed var(--border);border-radius:10px;padding:30px;text-align:center;cursor:pointer}
+.upload-area:hover{border-color:var(--accent)}
+input[type=file]{display:none}
+@media(max-width:768px){.chart-row,.chart-row3{grid-template-columns:1fr}main{padding:16px}nav{padding:8px 16px}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>💬 Comment Clustering System</h1>
+    <span style="color:var(--muted);font-size:.9rem">Instagram NLP Sentiment & Toxicity Analysis</span>
+  </div>
+  <div class="badge">K-Means AI</div>
+</header>
+<nav>
+  <button class="active" onclick="showPanel('single',this)">💬 Single Comment</button>
+  <button onclick="showPanel('batch',this)">📋 Bulk Analysis</button>
+  <button onclick="showPanel('upload',this)">📤 CSV Upload</button>
+  <button onclick="showPanel('toxic',this)">☣️ Toxic Comments</button>
+  <button onclick="showPanel('history',this)">📜 History</button>
+  <button onclick="showPanel('analytics',this)">📊 Analytics</button>
+</nav>
+<main>
+
+<!-- SINGLE -->
+<div id="panel-single" class="panel active">
+  <div class="card">
+    <h2>💬 Analyze Single Comment</h2>
+    <input type="text" id="single-username" placeholder="Username (e.g. sarah_j)" style="margin-bottom:10px"/>
+    <textarea id="single-text" rows="4" placeholder="Paste an Instagram comment here...&#10;Example: This is absolutely amazing! Love it so much! ❤️"></textarea>
+    <div class="flex" style="margin-top:12px">
+      <button class="btn btn-primary" onclick="analyzeSingle()">🧠 Analyze Comment</button>
+      <button class="btn btn-secondary" onclick="clearSingle()">✖ Clear</button>
+    </div>
+    <div id="single-result"></div>
+  </div>
+</div>
+
+<!-- BATCH -->
+<div id="panel-batch" class="panel">
+  <div class="card">
+    <h2>📋 Bulk Comment Analysis (one per line, format: username: comment)</h2>
+    <textarea id="batch-text" rows="12" placeholder="sarah_j: This is absolutely amazing! Love it so much!&#10;mike_23: You are such an idiot! Nobody likes you!&#10;priya_k: Okay I guess. Nothing special.&#10;alex_99: OMG I cannot believe this is real!!&#10;emma_w: This made me cry so much 😢"></textarea>
+    <div class="flex" style="margin-top:12px">
+      <button class="btn btn-primary" onclick="analyzeBatch()">🚀 Analyze All</button>
+      <button class="btn btn-secondary" onclick="clearBatch()">✖ Clear</button>
+    </div>
+    <div id="batch-result"></div>
+  </div>
+</div>
+
+<!-- UPLOAD -->
+<div id="panel-upload" class="panel">
+  <div class="card">
+    <h2>📤 Upload CSV File</h2>
+    <p style="color:var(--muted);margin-bottom:16px;font-size:.85rem">CSV must have columns: <strong>comment_text</strong> and optionally <strong>username</strong>. Max 200 rows.</p>
+    <div class="upload-area" onclick="document.getElementById('csv-file').click()">
+      <input type="file" id="csv-file" accept=".csv" onchange="handleFile(this)"/>
+      <div id="upload-placeholder">
+        <p style="font-size:2rem">📁</p>
+        <p>Click to select CSV file</p>
+        <p style="color:var(--muted);font-size:.8rem;margin-top:6px">instagram_comments.csv</p>
+      </div>
+    </div>
+    <div class="flex" style="margin-top:16px">
+      <button class="btn btn-primary" onclick="uploadAnalyze()">📊 Analyze CSV</button>
+    </div>
+    <div id="upload-result"></div>
+  </div>
+</div>
+
+<!-- TOXIC -->
+<div id="panel-toxic" class="panel">
+  <div class="card">
+    <h2>☣️ Toxic Comments Detection</h2>
+    <button class="btn btn-primary" onclick="loadToxic()">🔄 Load Toxic Comments</button>
+    <div id="toxic-result" style="margin-top:16px"><p style="color:var(--muted)">Click button to load toxic comments.</p></div>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<div id="panel-history" class="panel">
+  <div class="card">
+    <h2>📜 Analysis History</h2>
+    <div class="flex" style="margin-bottom:16px">
+      <button class="btn btn-primary" onclick="loadHistory()">🔄 Refresh</button>
+      <select id="history-limit" onchange="loadHistory()">
+        <option value="50">Last 50</option>
+        <option value="100" selected>Last 100</option>
+        <option value="200">Last 200</option>
+      </select>
+    </div>
+    <div id="history-table"><p style="color:var(--muted)">Click Refresh to load.</p></div>
+  </div>
+</div>
+
+<!-- ANALYTICS -->
+<div id="panel-analytics" class="panel">
+  <div id="stats-grid" class="stat-grid"></div>
+  <div class="chart-row" style="margin-bottom:20px">
+    <div class="card"><h2>📈 Sentiment Distribution</h2><canvas id="chart-sentiment" height="260"></canvas></div>
+    <div class="card"><h2>☣️ Toxicity Distribution</h2><canvas id="chart-toxic" height="260"></canvas></div>
+  </div>
+  <div class="chart-row">
+    <div class="card"><h2>😊 Emotion Distribution</h2><canvas id="chart-emotion" height="260"></canvas></div>
+    <div class="card"><h2>📅 Analysis Timeline</h2><canvas id="chart-timeline" height="260"></canvas></div>
+  </div>
+</div>
+
+</main>
+<script>
+const API = 'http://127.0.0.1:5000';
+
+function showPanel(name, btn) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  btn.classList.add('active');
+  if(name==='analytics') loadAnalytics();
+  if(name==='history') loadHistory();
+  if(name==='toxic') loadToxic();
+}
+
+function sentimentClass(s){
+  if(s==='positive') return 'result-pos';
+  if(s==='negative') return 'result-neg';
+  return 'result-neu';
+}
+function sentimentTag(s){
+  if(s==='positive') return '<span class="tag tag-pos">✅ POSITIVE</span>';
+  if(s==='negative') return '<span class="tag tag-neg">❌ NEGATIVE</span>';
+  return '<span class="tag tag-neu">➖ NEUTRAL</span>';
+}
+function toxicTag(t){ return t?'<span class="tag tag-toxic">☣️ TOXIC</span>':'<span class="tag tag-pos">✅ SAFE</span>'; }
+function emotionEmoji(e){
+  const map={happy:'😊',angry:'😡',sad:'😢',excited:'🤩',fear:'😨',disgust:'🤢',surprised:'😲',neutral:'😐'};
+  return (map[e]||'😐')+' '+e.toUpperCase();
+}
+
+function resultHTML(r) {
+  const pct = Math.round(r.confidence*100);
+  const scoreColor = r.score>0?'var(--pos)':r.score<0?'var(--neg)':'var(--neu)';
+  const cls = r.is_toxic?'result-toxic':sentimentClass(r.sentiment);
+  return `<div class="result-box ${cls}">
+    <div class="flex" style="justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+      <div>${sentimentTag(r.sentiment)} ${toxicTag(r.is_toxic)}
+        ${r.is_sarcastic?'<span class="tag tag-info">🙄 SARCASTIC</span>':''}
+      </div>
+      <span style="color:var(--muted);font-size:.85rem">Confidence: <strong>${pct}%</strong></span>
+    </div>
+    <div class="flex" style="gap:20px;flex-wrap:wrap;margin-bottom:10px">
+      <div><span style="color:var(--muted);font-size:.8rem">Emotion</span><br><strong>${emotionEmoji(r.emotion||'neutral')}</strong></div>
+      <div><span style="color:var(--muted);font-size:.8rem">Score (-1 to +1)</span><br><strong style="color:${scoreColor}">${r.score}</strong></div>
+      <div><span style="color:var(--muted);font-size:.8rem">Cluster</span><br><strong style="font-size:.85rem">${r.cluster_label||'N/A'}</strong></div>
+      ${r.username?`<div><span style="color:var(--muted);font-size:.8rem">User</span><br><strong>@${r.username}</strong></div>`:''}
+    </div>
+    <div class="meter"><div class="meter-fill ${r.sentiment==='positive'?'fill-pos':r.sentiment==='negative'?'fill-neg':'fill-neu'}" style="width:${pct}%"></div></div>
+    ${r.emojis&&r.emojis.length?`<p style="margin-top:8px;font-size:.85rem">Emojis: ${r.emojis.join(' ')}</p>`:''}
+    ${r.cleaned_text?`<p style="color:var(--muted);font-size:.8rem;margin-top:6px">Cleaned: ${r.cleaned_text.substring(0,150)}</p>`:''}
+  </div>`;
+}
+
+async function analyzeSingle() {
+  const text = document.getElementById('single-text').value.trim();
+  const username = document.getElementById('single-username').value.trim()||'anonymous';
+  if(!text){alert('Please enter a comment.');return;}
+  const el = document.getElementById('single-result');
+  el.innerHTML = '<br><span class="spinner"></span> Analyzing...';
+  try {
+    const res = await fetch(`${API}/api/analyze`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text,username})});
+    const d = await res.json();
+    el.innerHTML = resultHTML(d);
+  } catch(e){el.innerHTML=`<p style="color:var(--neg)">Error: ${e.message}</p>`;}
+}
+
+function clearSingle(){
+  document.getElementById('single-text').value='';
+  document.getElementById('single-username').value='';
+  document.getElementById('single-result').innerHTML='';
+}
+
+async function analyzeBatch() {
+  const raw = document.getElementById('batch-text').value.trim();
+  if(!raw){alert('Enter at least one comment.');return;}
+  const lines = raw.split('\n').map(l=>l.trim()).filter(Boolean);
+  const comments = lines.map(line=>{
+    const colonIdx = line.indexOf(':');
+    if(colonIdx>0 && colonIdx<30){
+      return {username:line.substring(0,colonIdx).trim(), text:line.substring(colonIdx+1).trim()};
+    }
+    return {username:'anonymous', text:line};
+  });
+  const el = document.getElementById('batch-result');
+  el.innerHTML = '<br><span class="spinner"></span> Analyzing...';
+  try {
+    const res = await fetch(`${API}/api/analyze/batch`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({comments})});
+    const d = await res.json();
+    el.innerHTML = renderBatch(d);
+  } catch(e){el.innerHTML=`<p style="color:var(--neg)">Error: ${e.message}</p>`;}
+}
+
+function clearBatch(){
+  document.getElementById('batch-text').value='';
+  document.getElementById('batch-result').innerHTML='';
+}
+
+function renderBatch(d) {
+  const s = d.summary;
+  const rows = d.results.map((r,i)=>`<tr>
+    <td>${i+1}</td>
+    <td>@${r.username||'anon'}</td>
+    <td style="max-width:200px">${(r.comment_text||'').substring(0,60)}...</td>
+    <td>${sentimentTag(r.sentiment)}</td>
+    <td>${emotionEmoji(r.emotion||'neutral')}</td>
+    <td style="color:${r.score>0?'var(--pos)':r.score<0?'var(--neg)':'var(--neu)'}">${r.score}</td>
+    <td>${toxicTag(r.is_toxic)}</td>
+    <td style="font-size:.75rem">${(r.cluster_label||'').substring(0,20)}</td>
+  </tr>`).join('');
+  return `<div style="margin-top:16px">
+    <div class="stat-grid" style="margin-bottom:16px">
+      <div class="stat-card"><div class="stat-num">${s.total}</div><div class="stat-label">Total</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--pos)">${s.positive}</div><div class="stat-label">Positive</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--neg)">${s.negative}</div><div class="stat-label">Negative</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--neu)">${s.neutral}</div><div class="stat-label">Neutral</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--toxic)">${s.toxic}</div><div class="stat-label">Toxic</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--accent)">${Math.round(s.avg_confidence*100)}%</div><div class="stat-label">Avg Confidence</div></div>
+    </div>
+    <div style="overflow-x:auto"><table>
+      <thead><tr><th>#</th><th>User</th><th>Comment</th><th>Sentiment</th><th>Emotion</th><th>Score</th><th>Toxic</th><th>Cluster</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>
+  </div>`;
+}
+
+let selFile=null;
+function handleFile(input){
+  selFile=input.files[0];
+  if(selFile) document.getElementById('upload-placeholder').innerHTML=`<p>📄 ${selFile.name}</p><p style="color:var(--pos);font-size:.85rem">Ready!</p>`;
+}
+async function uploadAnalyze(){
+  if(!selFile){alert('Select a CSV file first.');return;}
+  const el=document.getElementById('upload-result');
+  el.innerHTML='<br><span class="spinner"></span> Processing...';
+  const fd=new FormData(); fd.append('file',selFile);
+  try{
+    const res=await fetch(`${API}/api/upload`,{method:'POST',body:fd});
+    const d=await res.json();
+    el.innerHTML=renderBatch(d);
+  }catch(e){el.innerHTML=`<p style="color:var(--neg)">${e.message}</p>`;}
+}
+
+async function loadToxic(){
+  const el=document.getElementById('toxic-result');
+  el.innerHTML='<span class="spinner"></span>';
+  try{
+    const res=await fetch(`${API}/api/toxic`);
+    const rows=await res.json();
+    if(!rows.length){el.innerHTML='<p style="color:var(--pos)">✅ No toxic comments found!</p>';return;}
+    const trs=rows.map(r=>`<tr>
+      <td>@${r.username||'anon'}</td>
+      <td style="max-width:300px;color:var(--neg)">${r.comment_text}</td>
+      <td>${emotionEmoji(r.emotion||'angry')}</td>
+      <td style="color:var(--neg)">${r.score}</td>
+      <td style="color:var(--muted);font-size:.75rem">${r.created_at.substring(0,16)}</td>
+    </tr>`).join('');
+    el.innerHTML=`<div style="overflow-x:auto"><table>
+      <thead><tr><th>User</th><th>Comment</th><th>Emotion</th><th>Score</th><th>Date</th></tr></thead>
+      <tbody>${trs}</tbody>
+    </table></div>`;
+  }catch(e){el.innerHTML=`<p style="color:var(--neg)">${e.message}</p>`;}
+}
+
+async function loadHistory(){
+  const limit=document.getElementById('history-limit').value;
+  const el=document.getElementById('history-table');
+  el.innerHTML='<span class="spinner"></span>';
+  try{
+    const res=await fetch(`${API}/api/history?limit=${limit}`);
+    const rows=await res.json();
+    if(!rows.length){el.innerHTML='<p style="color:var(--muted)">No history yet.</p>';return;}
+    const trs=rows.map(r=>`<tr>
+      <td>${r.id}</td>
+      <td>@${r.username||'anon'}</td>
+      <td style="max-width:250px">${(r.comment_text||'').substring(0,70)}...</td>
+      <td>${sentimentTag(r.sentiment)}</td>
+      <td>${emotionEmoji(r.emotion||'neutral')}</td>
+      <td style="color:${r.score>0?'var(--pos)':r.score<0?'var(--neg)':'var(--neu)'}">${r.score}</td>
+      <td>${toxicTag(r.is_toxic)}</td>
+      <td style="color:var(--muted);font-size:.75rem">${(r.created_at||'').substring(0,16)}</td>
+    </tr>`).join('');
+    el.innerHTML=`<div style="overflow-x:auto"><table>
+      <thead><tr><th>ID</th><th>User</th><th>Comment</th><th>Sentiment</th><th>Emotion</th><th>Score</th><th>Toxic</th><th>Date</th></tr></thead>
+      <tbody>${trs}</tbody>
+    </table></div>`;
+  }catch(e){el.innerHTML=`<p style="color:var(--neg)">${e.message}</p>`;}
+}
+
+let charts={};
+async function loadAnalytics(){
+  try{
+    const stat=await (await fetch(`${API}/api/stats`)).json();
+    const hist=await (await fetch(`${API}/api/history?limit=200`)).json();
+
+    document.getElementById('stats-grid').innerHTML=`
+      <div class="stat-card"><div class="stat-num">${stat.total}</div><div class="stat-label">Total Comments</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--pos)">${stat.positive}</div><div class="stat-label">Positive</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--neg)">${stat.negative}</div><div class="stat-label">Negative</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--neu)">${stat.neutral}</div><div class="stat-label">Neutral</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--toxic)">${stat.toxic}</div><div class="stat-label">Toxic</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--pos)">${stat.non_toxic}</div><div class="stat-label">Safe</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--accent)">${Math.round(stat.avg_confidence*100)}%</div><div class="stat-label">Avg Confidence</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:${stat.avg_score>0?'var(--pos)':stat.avg_score<0?'var(--neg)':'var(--neu)'}">${stat.avg_score}</div><div class="stat-label">Avg Score</div></div>`;
+
+    // Sentiment donut
+    if(charts.sent) charts.sent.destroy();
+    charts.sent=new Chart(document.getElementById('chart-sentiment'),{
+      type:'doughnut',
+      data:{labels:['Positive','Negative','Neutral'],
+            datasets:[{data:[stat.positive,stat.negative,stat.neutral],
+                       backgroundColor:['rgba(34,197,94,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],
+                       borderWidth:0}]},
+      options:{plugins:{legend:{labels:{color:'#e2e8f0'}}}}});
+
+    // Toxicity donut
+    if(charts.tox) charts.tox.destroy();
+    charts.tox=new Chart(document.getElementById('chart-toxic'),{
+      type:'doughnut',
+      data:{labels:['Safe','Toxic'],
+            datasets:[{data:[stat.non_toxic,stat.toxic],
+                       backgroundColor:['rgba(34,197,94,.8)','rgba(220,38,38,.8)'],
+                       borderWidth:0}]},
+      options:{plugins:{legend:{labels:{color:'#e2e8f0'}}}}});
+
+    // Emotion bar
+    const emotions=stat.emotions||{};
+    if(charts.emo) charts.emo.destroy();
+    charts.emo=new Chart(document.getElementById('chart-emotion'),{
+      type:'bar',
+      data:{labels:Object.keys(emotions),
+            datasets:[{label:'Count',data:Object.values(emotions),
+                       backgroundColor:'rgba(139,92,246,.75)',borderRadius:4}]},
+      options:{scales:{x:{ticks:{color:'#94a3b8'}},y:{ticks:{color:'#94a3b8'}}},
+               plugins:{legend:{display:false}}}});
+
+    // Timeline
+    const byDate={};
+    hist.forEach(r=>{const d=(r.created_at||'').substring(0,10);if(d)byDate[d]=(byDate[d]||0)+1;});
+    const dates=Object.keys(byDate).sort();
+    if(charts.time) charts.time.destroy();
+    charts.time=new Chart(document.getElementById('chart-timeline'),{
+      type:'line',
+      data:{labels:dates,datasets:[{label:'Comments',data:dates.map(d=>byDate[d]),
+            borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,.15)',fill:true,tension:.4,pointRadius:4}]},
+      options:{scales:{x:{ticks:{color:'#94a3b8'}},y:{ticks:{color:'#94a3b8'}}},
+               plugins:{legend:{labels:{color:'#e2e8f0'}}}}});
+  }catch(e){console.error('Analytics error:',e);}
+}
+</script>
+</body>
+</html>
