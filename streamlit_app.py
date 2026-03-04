@@ -2,7 +2,6 @@ import subprocess
 import sys
 import os
 
-# Install packages
 subprocess.run([sys.executable, "-m", "pip", "install",
     "nltk", "scikit-learn", "torch", "joblib", "SQLAlchemy",
     "tqdm", "vaderSentiment", "textblob", "emoji",
@@ -19,7 +18,6 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-# Fix paths
 BASE_DIR    = os.path.dirname(os.path.abspath(__file__))
 BACKEND_DIR = os.path.join(BASE_DIR, 'backend')
 sys.path.insert(0, BASE_DIR)
@@ -34,14 +32,12 @@ st.set_page_config(
 
 @st.cache_resource
 def load_everything():
-    # Generate dataset if missing
     csv_path = os.path.join(BASE_DIR, "instagram_comments.csv")
     if not os.path.exists(csv_path):
         sys.path.insert(0, os.path.join(BASE_DIR, "data"))
         from generate_dataset import generate_dataset
         generate_dataset(200, csv_path)
 
-    # Train clustering if missing
     models_dir = os.path.join(BASE_DIR, "models")
     os.makedirs(models_dir, exist_ok=True)
     if not os.path.exists(os.path.join(models_dir, "kmeans_model.pkl")):
@@ -63,12 +59,10 @@ with st.spinner("🔄 Loading AI Models..."):
         st.error(f"Error: {e}")
         st.stop()
 
-# ── Header ─────────────────────────────────────────────────────
 st.title("💬 Comment Clustering System")
-st.markdown("**Instagram Comment CLustering & Toxicity Analysis Platform**")
+st.markdown("**Instagram Comment Clustering & Toxicity Analysis Platform**")
 st.markdown("---")
 
-# ── Tabs ───────────────────────────────────────────────────────
 tab1, tab2, tab3, tab4 = st.tabs([
     "💬 Single Comment",
     "📋 Bulk Analysis",
@@ -76,7 +70,6 @@ tab1, tab2, tab3, tab4 = st.tabs([
     "📊 Analytics"
 ])
 
-# ── Helper ─────────────────────────────────────────────────────
 def sentiment_color(s):
     if s == "positive": return "🟢"
     if s == "negative": return "🔴"
@@ -87,11 +80,37 @@ def emotion_emoji(e):
          "fear":"😨","disgust":"🤢","surprised":"😲","neutral":"😐"}
     return m.get(e,"😐")
 
-def get_cluster(text):
+def get_cluster(text, sentiment_result=None):
     try:
-        return predict_cluster(text, vectorizer, kmeans)
-    except:
-        return {"cluster":0,"label":"Unknown","confidence":0.0}
+        result = predict_cluster(text, vectorizer, kmeans)
+
+        if sentiment_result:
+            is_toxic  = sentiment_result.get("is_toxic", False)
+            sentiment = sentiment_result.get("sentiment", "")
+            score     = float(sentiment_result.get("score", 0))
+            emotion   = result["emotion"]
+
+            positive_labels = {"Positive 😀", "Inspirational 🤩"}
+
+            SAD_WORDS = {"cry", "crying", "miss", "lonely", "alone", "sad", "hurt",
+                         "hurts", "memories", "wish", "lost", "heartbroken", "tears",
+                         "painful", "grief", "mourn", "sorrow", "regret", "longing"}
+
+            text_words     = set(text.lower().split())
+            is_sad_comment = bool(text_words & SAD_WORDS)
+
+            if is_toxic:
+                result["emotion"] = "Toxic ☣️"
+            elif is_sad_comment:
+                result["emotion"] = "Sad & Emotional 😢"
+            elif sentiment == "negative" and score <= -0.30 and emotion in positive_labels:
+                result["emotion"] = "Negative 😡"
+            elif sentiment == "positive" and score >= 0.35 and emotion not in positive_labels:
+                result["emotion"] = "Positive 😀"
+
+        return result
+    except Exception as ex:
+        return {"cluster": 0, "label": "Unknown", "confidence": 0.0, "emotion": "Unknown"}
 
 # ── Tab 1 Single ───────────────────────────────────────────────
 with tab1:
@@ -106,10 +125,9 @@ with tab1:
         if text.strip():
             with st.spinner("Analyzing..."):
                 result  = analyze_comment(text)
-                cluster = get_cluster(text)
+                cluster = get_cluster(text, sentiment_result=result)
 
-            # Metrics
-            col1,col2,col3,col4 = st.columns(4)
+            col1, col2, col3, col4 = st.columns(4)
             col1.metric("Sentiment",
                 f"{sentiment_color(result['sentiment'])} {result['sentiment'].upper()}")
             col2.metric("Emotion",
@@ -117,13 +135,11 @@ with tab1:
             col3.metric("Score (-1 to +1)", result['score'])
             col4.metric("Confidence", f"{result['confidence']*100:.1f}%")
 
-            col5,col6,col7 = st.columns(3)
+            col5, col6, col7 = st.columns(3)
             col5.metric("Toxic",     "☣️ YES" if result['is_toxic']     else "✅ NO")
             col6.metric("Sarcastic", "🙄 YES" if result['is_sarcastic'] else "✅ NO")
-            col7.metric("Cluster", f"{cluster['emotion']} ({cluster['label']})")
+            col7.metric("Cluster",   f"{cluster['emotion']} ({cluster['label']})")
 
-
-            # Color box
             if result['is_toxic']:
                 st.error(f"☣️ TOXIC COMMENT DETECTED from @{username or 'anonymous'}")
             elif result['sentiment'] == 'positive':
@@ -161,79 +177,66 @@ with tab2:
                 results = analyze_batch(comments)
                 summary = get_summary(results)
 
-            # Summary metrics
             st.markdown("### 📊 Summary")
-            c1,c2,c3,c4,c5 = st.columns(5)
+            c1, c2, c3, c4, c5 = st.columns(5)
             c1.metric("Total",    summary['total'])
             c2.metric("Positive", summary['positive'])
             c3.metric("Negative", summary['negative'])
             c4.metric("Neutral",  summary['neutral'])
             c5.metric("Toxic ☣️", summary['toxic'])
 
-            c6,c7,c8 = st.columns(3)
+            c6, c7, c8 = st.columns(3)
             c6.metric("Avg Score",      summary['avg_score'])
             c7.metric("Avg Confidence", f"{summary['avg_confidence']*100:.1f}%")
             c8.metric("Overall",        summary['overall_sentiment'].upper())
 
-            # Charts
             col_a, col_b = st.columns(2)
             with col_a:
                 fig = px.pie(
-                    values=[summary['positive'],
-                            summary['negative'],
-                            summary['neutral']],
-                    names=['Positive','Negative','Neutral'],
-                    color_discrete_sequence=['#22c55e','#ef4444','#f59e0b'],
+                    values=[summary['positive'], summary['negative'], summary['neutral']],
+                    names=['Positive', 'Negative', 'Neutral'],
+                    color_discrete_sequence=['#22c55e', '#ef4444', '#f59e0b'],
                     title="Sentiment Distribution"
                 )
-                fig.update_layout(
-                    paper_bgcolor='rgba(0,0,0,0)',
-                    font_color='white')
+                fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', font_color='white')
                 st.plotly_chart(fig, use_container_width=True)
 
             with col_b:
                 fig2 = px.pie(
                     values=[summary['non_toxic'], summary['toxic']],
-                    names=['Safe','Toxic'],
-                    color_discrete_sequence=['#22c55e','#dc2626'],
+                    names=['Safe', 'Toxic'],
+                    color_discrete_sequence=['#22c55e', '#dc2626'],
                     title="Toxicity Distribution"
                 )
-                fig2.update_layout(
-                    paper_bgcolor='rgba(0,0,0,0)',
-                    font_color='white')
+                fig2.update_layout(paper_bgcolor='rgba(0,0,0,0)', font_color='white')
                 st.plotly_chart(fig2, use_container_width=True)
 
-            # Emotion chart
             if summary['emotions']:
                 fig3 = px.bar(
                     x=list(summary['emotions'].keys()),
                     y=list(summary['emotions'].values()),
                     color_discrete_sequence=['#8b5cf6'],
                     title="Emotion Distribution",
-                    labels={'x':'Emotion','y':'Count'}
+                    labels={'x': 'Emotion', 'y': 'Count'}
                 )
-                fig3.update_layout(
-                    paper_bgcolor='rgba(0,0,0,0)',
-                    font_color='white')
+                fig3.update_layout(paper_bgcolor='rgba(0,0,0,0)', font_color='white')
                 st.plotly_chart(fig3, use_container_width=True)
 
-            # Results table
             st.markdown("### 📋 Detailed Results")
             df_results = pd.DataFrame([{
-                "Username":  usernames[i],
-                "Comment":   comments[i][:80],
-                "Sentiment": f"{sentiment_color(r['sentiment'])} {r['sentiment'].upper()}",
-                "Emotion":   f"{emotion_emoji(r['emotion'])} {r['emotion']}",
-                "Score":     r['score'],
-                "Confidence":f"{r['confidence']*100:.1f}%",
-                "Toxic":     "☣️ YES" if r['is_toxic'] else "✅ NO",
-                "Sarcastic": "🙄 YES" if r['is_sarcastic'] else "NO",
-            } for i,r in enumerate(results)])
+                "Username":   usernames[i],
+                "Comment":    comments[i][:80],
+                "Sentiment":  f"{sentiment_color(r['sentiment'])} {r['sentiment'].upper()}",
+                "Emotion":    f"{emotion_emoji(r['emotion'])} {r['emotion']}",
+                "Score":      r['score'],
+                "Confidence": f"{r['confidence']*100:.1f}%",
+                "Toxic":      "☣️ YES" if r['is_toxic'] else "✅ NO",
+                "Sarcastic":  "🙄 YES" if r['is_sarcastic'] else "NO",
+            } for i, r in enumerate(results)])
             st.dataframe(df_results, use_container_width=True)
 
-            # Toxic comments highlight
             toxic_list = [(usernames[i], comments[i])
-                          for i,r in enumerate(results) if r['is_toxic']]
+                          for i, r in enumerate(results) if r['is_toxic']]
             if toxic_list:
                 st.markdown("### ☣️ Toxic Comments Detected")
                 for user, comment in toxic_list:
@@ -252,19 +255,19 @@ with tab3:
         st.dataframe(df_in.head(5), use_container_width=True)
         if st.button("📊 Analyze CSV", key="btn3"):
             col = next((c for c in
-                ["comment_text","text","comment","Comment"]
+                ["comment_text", "text", "comment", "Comment"]
                 if c in df_in.columns), None)
             ucol = next((c for c in
-                ["username","user","Username"]
+                ["username", "user", "Username"]
                 if c in df_in.columns), None)
             if col:
                 comments  = df_in[col].dropna().astype(str).tolist()[:200]
                 usernames = (df_in[ucol].astype(str).tolist()[:200]
-                             if ucol else ["anonymous"]*len(comments))
+                             if ucol else ["anonymous"] * len(comments))
                 with st.spinner(f"Processing {len(comments)} comments..."):
                     results = analyze_batch(comments)
                     summary = get_summary(results)
-                c1,c2,c3,c4,c5 = st.columns(5)
+                c1, c2, c3, c4, c5 = st.columns(5)
                 c1.metric("Total",    summary['total'])
                 c2.metric("Positive", summary['positive'])
                 c3.metric("Negative", summary['negative'])
@@ -295,7 +298,7 @@ with tab4:
             stats = get_stats()
             hist  = get_all_comments(200)
 
-            c1,c2,c3,c4 = st.columns(4)
+            c1, c2, c3, c4 = st.columns(4)
             c1.metric("Total",    stats['total'])
             c2.metric("Positive", stats['positive'])
             c3.metric("Negative", stats['negative'])
@@ -307,16 +310,12 @@ with tab4:
                 col_a, col_b = st.columns(2)
                 with col_a:
                     fig = px.pie(
-                        values=[stats['positive'],
-                                stats['negative'],
-                                stats['neutral']],
-                        names=['Positive','Negative','Neutral'],
-                        color_discrete_sequence=['#22c55e','#ef4444','#f59e0b'],
+                        values=[stats['positive'], stats['negative'], stats['neutral']],
+                        names=['Positive', 'Negative', 'Neutral'],
+                        color_discrete_sequence=['#22c55e', '#ef4444', '#f59e0b'],
                         title="Sentiment Distribution"
                     )
-                    fig.update_layout(
-                        paper_bgcolor='rgba(0,0,0,0)',
-                        font_color='white')
+                    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', font_color='white')
                     st.plotly_chart(fig, use_container_width=True)
 
                 with col_b:
@@ -327,14 +326,12 @@ with tab4:
                             color_discrete_sequence=['#8b5cf6'],
                             title="Emotion Distribution"
                         )
-                        fig2.update_layout(
-                            paper_bgcolor='rgba(0,0,0,0)',
-                            font_color='white')
+                        fig2.update_layout(paper_bgcolor='rgba(0,0,0,0)', font_color='white')
                         st.plotly_chart(fig2, use_container_width=True)
 
                 st.dataframe(
-                    df_h[['username','comment_text','sentiment',
-                          'emotion','score','is_toxic']].head(50),
+                    df_h[['username', 'comment_text', 'sentiment',
+                           'emotion', 'score', 'is_toxic']].head(50),
                     use_container_width=True)
             else:
                 st.info("No data yet — analyze some comments first!")
